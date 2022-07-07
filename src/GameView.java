@@ -405,8 +405,6 @@ public class GameView extends JPanel implements ActionListener {
     }
 
     private static void nightAction() {
-        List<String> werewolfList = new ArrayList<String>();
-
         logText.append("-------------------------------------------------\n");
         logText.append("GameMaster: 夜になりました。\n");
         nightLabel.setText("あなたの役職は" + Main.myself.role.getName() + "です。");
