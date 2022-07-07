@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 public class Player {//構造体
     String name;
     RoleType role;
-    int identifier = 0;
+    int identifier;
     Color color = Color.black;
     boolean wasPhantomThief = false;
     int getVote = 0;

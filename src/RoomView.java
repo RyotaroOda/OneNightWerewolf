@@ -15,6 +15,7 @@ public class RoomView extends JPanel implements ActionListener {
     private static JButton readyButton;
     private static JTextArea logText;
     private final JScrollPane logScrollPane;
+    private static JScrollBar logScrollBar;
     private final JTextField messageField;
 
     public RoomView() {
@@ -131,11 +132,7 @@ public class RoomView extends JPanel implements ActionListener {
         this.logScrollPane = new JScrollPane();
         logScrollPane.setViewportView(logText);
         logScrollPane.setBorder(debugBorder);
-        logScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() { //自動的に下にスクロールする
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-            }
-        });
+        logScrollBar = logScrollPane.getVerticalScrollBar();
         c.gridx = 10;
         c.gridy = 0;
         c.gridwidth = 6;
@@ -186,10 +183,12 @@ public class RoomView extends JPanel implements ActionListener {
     public static void showPlayer(String name) {
         playerNameList.append(name + "\n");
         logText.append(name + "\n");
+        logScrollBar.setValue(logScrollBar.getMaximum());
     }
 
     public static void writeLog(String message) {
         logText.append(message + "\n");
+        logScrollBar.setValue(logScrollBar.getMaximum());
     }
 
     public static void allReady() {
@@ -234,6 +233,7 @@ public class RoomView extends JPanel implements ActionListener {
             case "message":
                 if (!messageField.getText().equals("")) {
                     logText.append(Main.myself.name + ":" + messageField.getText() + "\n");
+                    logScrollBar.setValue(logScrollBar.getMaximum());
                     CommunicationAPI.send(TagType.ChatRoom, messageField.getText());
                     messageField.setText("");
                 }

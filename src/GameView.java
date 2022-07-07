@@ -390,7 +390,7 @@ public class GameView extends JPanel implements ActionListener {
         myRoleImage.setIcon(getImageIcon(Main.myself.role.getImageName(), 3));
 
         if (Main.playersCount != 4 || Main.others.size() + 1 != Main.playersCount || unusedRoles.length != 2) {//REVIEW ４人の場合のみ
-            System.err.println("PlayerCountError!!");
+            System.err.println("PlayerCountError!!");//ANCHOR error
         } else {
             for (int i = 0; i < otherNameLabels.length; i++) {
                 otherNameLabels[i].setText(Main.others.get(i).name);
@@ -468,7 +468,6 @@ public class GameView extends JPanel implements ActionListener {
             public void run() {
                 timeLabel.setText("Time: " + time);
                 time--;
-
                 if (time < 0) {
                     timer.cancel();
                     timeLabel.setText("Time Over");
@@ -483,6 +482,7 @@ public class GameView extends JPanel implements ActionListener {
         phaseImage.setIcon(getImageIcon("lib/width=1000/Vote.png", 2));
         logText.append("-------------------------------------------\n");
         logText.append("GameMaster: 投票時間になりました。\n");
+        logScrollBar.setValue(logScrollBar.getMaximum());
 
         for (int i = 0; i < Main.others.size(); i++) {
             selectPlayer.addItem(Main.others.get(i).name);
@@ -495,7 +495,6 @@ public class GameView extends JPanel implements ActionListener {
             public void run() {
                 voteTimeLabel.setText("投票してください : " + i);
                 i--;
-
                 if (i < 0) {
                     timer.cancel();
                     voteTimeLabel.setText("Time Over");
@@ -520,6 +519,7 @@ public class GameView extends JPanel implements ActionListener {
         }
         if (sacrifices.size() == 0) {
             logText.append("投票の結果 誰も処刑されませんでした。 \n");
+            logScrollBar.setValue(logScrollBar.getMaximum());
             for (int i = 0; i < Main.others.size(); i++) {
                 if (Main.others.get(i).role == RoleType.Werewolf) {
                     chaos = true;
@@ -527,11 +527,13 @@ public class GameView extends JPanel implements ActionListener {
             }
         } else if (sacrifices.size() == 1) {
             logText.append("投票の結果 " + sacrifices.get(0).name + "が処刑されました。\n");
+            logScrollBar.setValue(logScrollBar.getMaximum());
             if (sacrifices.get(0).role != RoleType.Werewolf) {
                 chaos = true;
             }
         } else {
             logText.append("投票の結果 " + sacrifices.get(0).name + "と" + sacrifices.get(1).name + "が処刑されました。\n");
+            logScrollBar.setValue(logScrollBar.getMaximum());
             if (sacrifices.get(0).role != RoleType.Werewolf && sacrifices.get(1).role != RoleType.Werewolf) {
                 chaos = true;
             }
@@ -543,21 +545,24 @@ public class GameView extends JPanel implements ActionListener {
 
             public void run() {
                 logText.append("・\n");
+                logScrollBar.setValue(logScrollBar.getMaximum());
                 time--;
 
                 if (time < 0) {
                     timer.cancel();
                     if (!chaos) {
-                        logText.append("最終結果：　村人チームの勝利！\n");
+                        logText.append("最終結果：　村人チームの勝利！\n\n");
                     } else {
-                        logText.append("最終結果：　人狼チームの勝利！\n");
+                        logText.append("最終結果：　人狼チームの勝利！\n\n");
                     }
+                    logScrollBar.setValue(logScrollBar.getMaximum());
                     for (int i = 0; i < otherRoleImages.length; i++) {
                         otherRoleImages[i].setIcon(getImageIcon(Main.others.get(i).role.getImageName(), 2));
                         if (Main.others.get(i).wasPhantomThief) {
                             otherNameLabels[i].setText(otherNameLabels[i].getText() + "(元怪盗)");
                         }
                     }
+                    myRoleImage.setIcon(getImageIcon(Main.myself.role.getImageName(), 3));
                     unusedRoleImage0.setIcon(getImageIcon(unusedRoles[0].getImageName(), 2));
                     unusedRoleImage1.setIcon(getImageIcon(unusedRoles[1].getImageName(), 2));
                     if (Main.myself.wasPhantomThief) {
@@ -601,7 +606,7 @@ public class GameView extends JPanel implements ActionListener {
         switch (e.getActionCommand()) {
             case "setting":
                 JOptionPane.showOptionDialog(this, null, "coming soon...", JOptionPane.PLAIN_MESSAGE,
-                        JOptionPane.DEFAULT_OPTION, null, null, null);//TODO: いつかやる
+                        JOptionPane.DEFAULT_OPTION, null, null, null);//REVIEW: いつか必要になる
                 break;
 
             case "Close":
@@ -614,16 +619,13 @@ public class GameView extends JPanel implements ActionListener {
                 break;
 
             case "FortuneTeller":
-                boolean fin = false;//TODO:
-                for (int i = 0; i < Main.others.size(); i++) {
-                    if (Main.others.get(i).name == nightSelect.getSelectedItem()) {
-                        nightMainLabel.setText(
-                                nightSelect.getSelectedItem() + "の役職は" + Main.others.get(i).role.getName() + "です。");
-                        otherRoleImages[i].setIcon(getImageIcon(Main.others.get(i).role.getImageName(), 2));
-                        fin = true;
-                    }
-                }
-                if (!fin) {
+                if (nightSelect.getSelectedIndex() <= Main.others.size() - 1) {
+                    nightMainLabel
+                            .setText(nightSelect.getSelectedItem() + "の役職は"
+                                    + Main.others.get(nightSelect.getSelectedIndex()).role.getName() + "です。");
+                    otherRoleImages[nightSelect.getSelectedIndex()].setIcon(
+                            getImageIcon(Main.others.get(nightSelect.getSelectedIndex()).role.getImageName(), 2));
+                } else {
                     String text = nightSelect.getSelectedItem() + "は ";
                     for (int i = 0; i < unusedRoles.length; i++) {
                         text += unusedRoles[i].getName();
@@ -636,6 +638,7 @@ public class GameView extends JPanel implements ActionListener {
                     unusedRoleImage0.setIcon(getImageIcon(unusedRoles[0].getImageName(), 2));
                     unusedRoleImage1.setIcon(getImageIcon(unusedRoles[1].getImageName(), 2));
                 }
+
                 nightMainPanel.remove(nightSelect);
                 nightButton.setActionCommand("Close");
                 break;
@@ -655,12 +658,12 @@ public class GameView extends JPanel implements ActionListener {
                 nightMainPanel.remove(nightSelect);
                 nightButton.setActionCommand("Close");
                 Main.myself.wasPhantomThief = true;
-                //TODO: 送る playerList.get(0)
                 break;
 
             case "message":
                 if (!messageField.getText().equals("")) {
                     logText.append(Main.myself.name + ":" + messageField.getText() + "\n");
+                    logScrollBar.setValue(logScrollBar.getMaximum());
                     CommunicationAPI.send(TagType.ChatGame, messageField.getText());
                     messageField.setText("");
                 }
@@ -668,6 +671,7 @@ public class GameView extends JPanel implements ActionListener {
 
             case "CO":
                 logText.append(Main.myself.name + ":[カミングアウト] 私の役職は" + selectCO.getSelectedItem() + "です。\n");
+                logScrollBar.setValue(logScrollBar.getMaximum());
                 CommunicationAPI.send(TagType.ChatGame, "[カミングアウト] 私の役職は" + selectCO.getSelectedItem() + "です。");
                 //TODO: 受信した時の画像変更
                 break;
@@ -676,10 +680,10 @@ public class GameView extends JPanel implements ActionListener {
                 voted = true;
                 if (Main.isHost) {
                     Main.others.get(selectPlayer.getSelectedIndex()).getVote++;
+                    CommunicationAPI.send(TagType.VOTE, Main.others.get(selectPlayer.getSelectedIndex()).identifier + "");
                     HostWorks.wait(TagType.VOTE);
                 } else {
-                    CommunicationAPI.send(TagType.VOTE,
-                            Main.others.get(selectPlayer.getSelectedIndex()).identifier + "");
+                    CommunicationAPI.send(TagType.VOTE, Main.others.get(selectPlayer.getSelectedIndex()).identifier + "");
                 }
                 changeCommandPanel("wait");
                 break;
@@ -693,7 +697,7 @@ public class GameView extends JPanel implements ActionListener {
                 break;
 
             default:
-                System.out.println("default: どこかで無効なボタンが押された");
+                System.out.println("default: どこかで無効なボタンが押された");//ANCHOR: error
                 break;
         }
     }

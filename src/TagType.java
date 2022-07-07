@@ -1,6 +1,6 @@
 //Written by 小田竜太郎
 
-public enum TagType {//TODO:
+public enum TagType {
     EnterRoom,
     MEMBER,
     NewMember,

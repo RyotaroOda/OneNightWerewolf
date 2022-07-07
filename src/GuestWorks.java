@@ -18,7 +18,7 @@ public class GuestWorks extends Thread {
             while (true) {
                 while (client.isReadReady()) {
                     String input = client.read();
-                    System.out.println(input);
+                    System.out.println(input);//ANCHOR input
                     if (input.startsWith(TagType.EnterRoom.getTag())) {
                         switch (input.substring(TagType.EnterRoom.getCharCount())) {
                             case "NAMEINUSE":
@@ -43,7 +43,6 @@ public class GuestWorks extends Thread {
 
                     else if (input.startsWith(TagType.MEMBER.getTag())) {
                         RoomView.showPlayer(input.substring(TagType.MEMBER.getCharCount()));
-
                     }
 
                     else if (input.startsWith(TagType.NewMember.getTag())) {
@@ -69,13 +68,13 @@ public class GuestWorks extends Thread {
                         roomEndLoop: while (true) {
                             if (client.isReadReady()) {
                                 input = client.read();
-                                System.out.println(input);
+                                System.out.println(input);//ANCHOR input
                             }
                             if (input.startsWith(TagType.READY.getTag())) {
                                 for (int i = 0; i < Main.others.size(); i++) {
                                     System.out.println(Main.others.get(i).name + Main.others.get(i).role
                                             + Main.others.get(i).identifier);
-                                    ;//ANCHOR
+                                    ;//ANCHOR ready
                                 }
                                 RoomView.endView();
                                 break roomEndLoop;
@@ -120,10 +119,14 @@ public class GuestWorks extends Thread {
                                 n -= m;//対象
                                 n /= Main.playersCount;
                                 RoleType stolen = null;
-                                for (int i = 0; i < Main.others.size(); i++) {
-                                    if (Main.others.get(i).identifier == n) {
-                                        stolen = Main.others.get(i).role;
-                                        Main.others.get(i).role = RoleType.PhantomThief;
+                                if (Main.myself.identifier == n) {
+                                    Main.myself.role = RoleType.PhantomThief;
+                                } else {
+                                    for (int i = 0; i < Main.others.size(); i++) {
+                                        if (Main.others.get(i).identifier == n) {
+                                            stolen = Main.others.get(i).role;
+                                            Main.others.get(i).role = RoleType.PhantomThief;
+                                        }
                                     }
                                 }
                                 for (int i = 0; i < Main.others.size(); i++) {

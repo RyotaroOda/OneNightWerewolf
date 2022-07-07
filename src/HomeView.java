@@ -178,7 +178,7 @@ public class HomeView extends JPanel implements ActionListener {
                 //     JOptionPane.showMessageDialog(this, "RoomIDを入力してください", "エラー", JOptionPane.ERROR_MESSAGE);
                 // }
                 // else if (!roomIDField.getText().equals("8080")) {
-                //     JOptionPane.showMessageDialog(this, "部屋が見つかりませんでした。", "エラー", JOptionPane.ERROR_MESSAGE);//TODO:
+                //     JOptionPane.showMessageDialog(this, "部屋が見つかりませんでした。", "エラー", JOptionPane.ERROR_MESSAGE);//REVIEW:オンライン
                 // }
                 else {
                     Main.isHost = false;

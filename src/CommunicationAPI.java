@@ -7,7 +7,7 @@ public class CommunicationAPI {
         } else {
             data = tag.getTag() + data;
         }
-        System.out.println("API: " + data);
+        System.out.println("API: " + data);//ANCHOR:API
         if (Main.isHost) {
             HostWorks.send(data);
         } else {

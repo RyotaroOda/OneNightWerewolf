@@ -1,7 +1,7 @@
 //Written by 小田竜太郎
 
 public enum RoleType {
-    Villager("村人", "lib/width=1000/CrowMark.png", true),
+    Villager("村人", "lib/width=1000/ScoopAndPitchfork.png", true),
     Werewolf("人狼", "lib/width=1000/FangRed.png", false),
     FortuneTeller("占い師", "lib/width=1000/Taikyokuzu.png", true),
     PhantomThief("怪盗", "lib/width=1000/DominoMask.png", true);

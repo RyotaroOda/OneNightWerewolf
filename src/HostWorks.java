@@ -58,7 +58,7 @@ public class HostWorks extends Thread {
                     while (server.isReadReady(i)) {
 
                         String input = server.read(i);
-                        System.out.println(input);
+                        System.out.println(input);//ANCHOR input
 
                         if (input.startsWith(TagType.ChatRoom.getTag())) {
                             RoomView.writeLog(input.substring(TagType.ChatRoom.getCharCount()));
@@ -85,13 +85,16 @@ public class HostWorks extends Thread {
                                 n -= m;//対象
                                 n /= Main.playersCount;
                                 RoleType stolen = null;
-                                for (int i2 = 0; i2 < Main.others.size(); i2++) {
-                                    if (Main.others.get(i2).identifier == n) {
-                                        stolen = Main.others.get(i2).role;
-                                        Main.others.get(i2).role = RoleType.PhantomThief;
+                                if (Main.myself.identifier == n) {
+                                    Main.myself.role = RoleType.PhantomThief;
+                                } else {
+                                    for (int i2 = 0; i2 < Main.others.size(); i2++) {
+                                        if (Main.others.get(i2).identifier == n) {
+                                            stolen = Main.others.get(i2).role;
+                                            Main.others.get(i2).role = RoleType.PhantomThief;
+                                        }
                                     }
                                 }
-
                                 for (int i2 = 0; i2 < Main.others.size(); i2++) {
                                     if (Main.others.get(i2).identifier == m) {
                                         Main.others.get(i2).wasPhantomThief = true;
@@ -104,7 +107,7 @@ public class HostWorks extends Thread {
 
                         else if (input.startsWith(TagType.VOTE.getTag())) {
                             int n = Integer.parseInt(input.substring(TagType.VOTE.getCharCount()));
-                            if (n == 0) {
+                            if (n == Main.myself.identifier) {
                                 Main.myself.getVote++;
                             } else {
                                 for (int j = 0; j < Main.others.size(); j++) {
@@ -165,7 +168,7 @@ public class HostWorks extends Thread {
                         break;
 
                     default:
-                        System.err.println("tagError");
+                        System.err.println("tagError");//ANCHOR err
                         break;
                 }
                 waitPlayers = 0;
@@ -183,7 +186,6 @@ public class HostWorks extends Thread {
             for (int i = 0; i < Main.roleSlots.length; i++) {
                 for (int j = 0; j < Main.roleSlots[i]; j++) {
                     allRoles.add(RoleType.values()[i]);
-                    System.out.println(RoleType.values()[i]);
                 }
             }
             Random rand = new Random();
@@ -197,7 +199,8 @@ public class HostWorks extends Thread {
                 allRoles.remove(n);
             }
 
-            server.writeAll(TagType.ShareStart.getTag());
+            sleep(1000);
+            server.writeAll(TagType.ShareStart.getTag());//ANCHOR role
             System.out.println(TagType.ShareStart.getTag());
             server.writeAll(TagType.ShareName.getTag() + Main.myself.name);
             System.out.println(TagType.ShareName.getTag() + Main.myself.name);
@@ -221,11 +224,14 @@ public class HostWorks extends Thread {
 
             }
             server.writeAll(TagType.READY.getTag());
-            System.out.println("READY:");
+            System.out.println("READY:");//ANCHOR ready
 
             RoomView.endView();
 
         } catch (ConnectionClosedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
