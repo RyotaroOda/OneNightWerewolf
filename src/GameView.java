@@ -511,13 +511,11 @@ public class GameView extends JPanel implements ActionListener {
         List<Player> sacrifices = new ArrayList<Player>();
         if (Main.myself.getVote >= 2) {
             sacrifices.add(Main.myself);
-            System.out.println("me"+ Main.myself.getVote);
         }
         for (int i = 0; i < Main.others.size(); i++) {
             if (Main.others.get(i).getVote >= 2) {
                 sacrifices.add(Main.others.get(i));
             }
-            System.out.println(i + "" + Main.others.get(i).getVote);
         }
         if (sacrifices.size() == 0) {
             logText.append("投票の結果 誰も処刑されませんでした。 \n");
