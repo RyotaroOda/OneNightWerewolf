@@ -463,7 +463,7 @@ public class GameView extends JPanel implements ActionListener {
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
-            int time = Main.gameTime * 60;//Max time
+            int time = Main.gameTime * 10;//Max time
 
             public void run() {
                 timeLabel.setText("Time: " + time);
@@ -511,11 +511,13 @@ public class GameView extends JPanel implements ActionListener {
         List<Player> sacrifices = new ArrayList<Player>();
         if (Main.myself.getVote >= 2) {
             sacrifices.add(Main.myself);
+            System.out.println("me"+ Main.myself.getVote);
         }
         for (int i = 0; i < Main.others.size(); i++) {
             if (Main.others.get(i).getVote >= 2) {
                 sacrifices.add(Main.others.get(i));
             }
+            System.out.println(i + "" + Main.others.get(i).getVote);
         }
         if (sacrifices.size() == 0) {
             logText.append("投票の結果 誰も処刑されませんでした。 \n");

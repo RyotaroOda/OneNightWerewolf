@@ -127,6 +127,7 @@ public class RoomView extends JPanel implements ActionListener {
         this.add(readyButton);
         readyButton.addActionListener(this);
         readyButton.setActionCommand("ready");
+        readyButton.setEnabled(false);
 
         logText = new JTextArea("log:\n");
         this.logScrollPane = new JScrollPane();
@@ -162,7 +163,6 @@ public class RoomView extends JPanel implements ActionListener {
         if (Main.isHost) {
             readyButton.setText("ゲームスタート！");
             readyButton.setActionCommand("start");
-            readyButton.setEnabled(false);
             Thread thread = new HostWorks();
             thread.start();
         } else {

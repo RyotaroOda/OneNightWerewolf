@@ -42,7 +42,11 @@ public class GuestWorks extends Thread {
                     }
 
                     else if (input.startsWith(TagType.MEMBER.getTag())) {
-                        RoomView.showPlayer(input.substring(TagType.MEMBER.getCharCount()));
+                        if(input.substring(TagType.MEMBER.getCharCount()).startsWith("FIN")) {
+                            RoomView.allReady();
+                        } else {
+                            RoomView.showPlayer(input.substring(TagType.MEMBER.getCharCount()));
+                        }
                     }
 
                     else if (input.startsWith(TagType.NewMember.getTag())) {
@@ -102,7 +106,6 @@ public class GuestWorks extends Thread {
                             else if (input.startsWith(TagType.ShareIdentifier.getTag())) {
                                 newPLayer.identifier = Integer
                                         .parseInt(input.substring(TagType.ShareIdentifier.getCharCount()));
-
                             }
                         }
                     }

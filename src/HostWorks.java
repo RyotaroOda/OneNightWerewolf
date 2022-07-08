@@ -41,6 +41,7 @@ public class HostWorks extends Thread {
                             for (int i2 = 0; i2 < lastNumOfClients; i2++) {
                                 server.write(lastNumOfClients, TagType.MEMBER.getTag() + guestNames.get(i2));
                             }
+                            server.write(lastNumOfClients, TagType.MEMBER.getTag() + "FIN");
                             for (int i2 = 0; i2 < lastNumOfClients; i2++) {
                                 server.write(i2, TagType.NewMember.getTag() + input);
                             }
@@ -206,7 +207,7 @@ public class HostWorks extends Thread {
             System.out.println(TagType.ShareName.getTag() + Main.myself.name);
             server.writeAll(TagType.ShareRole.getTag() + Main.myself.role.ordinal());
             System.out.println(TagType.ShareRole.getTag() + Main.myself.role.ordinal());
-            server.writeAll(TagType.ShareIdentifier.getTag() + Main.myself.role.ordinal());
+            server.writeAll(TagType.ShareIdentifier.getTag() + Main.myself.identifier);
             System.out.println(TagType.ShareIdentifier.getTag() + Main.myself.identifier);
             server.writeAll(TagType.ShareNext.getTag());
             System.out.println(TagType.ShareNext.getTag());
@@ -217,7 +218,7 @@ public class HostWorks extends Thread {
                 server.writeAll(TagType.ShareRole.getTag() + Main.others.get(i).role.ordinal());
                 System.out.println(TagType.ShareRole.getTag() + Main.others.get(i).role.ordinal());
                 server.writeAll(TagType.ShareIdentifier.getTag()
-                        + Main.others.get(i).role.ordinal());
+                        + Main.others.get(i).identifier);
                 System.out.println(TagType.ShareIdentifier.getTag() + Main.others.get(i).identifier);
                 server.writeAll(TagType.ShareNext.getTag());
                 System.out.println(TagType.ShareNext.getTag());
